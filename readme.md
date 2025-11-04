@@ -6,15 +6,6 @@
 
 <!-- todo : write later -->
 
-### SSH 接続の設定
-#### Raspberry Pi 側の設定
-
-<!-- todo : write later -->
-
-#### Windows 側の設定
-
-<!-- todo : write later -->
-
 ### PiSugar3 Plus の設定
 
 [このサイト](https://docs.pisugar.com/docs/product-wiki/battery/pisugar3/pisugar-3-series)のいう通りにすればOK
@@ -51,11 +42,20 @@ bash pisugar-power-manager.sh -c release
  - Soft Shutdown を Enable
 に設定することを推奨します．
 
+### SSH 接続の設定
+#### Raspberry Pi 側の設定
+
+<!-- todo : write later -->
+
+#### Windows 側の設定
+
+<!-- todo : write later -->
+
 ### pigpio のインストール
 
 [このサイト](https://note.com/caelum_zachanus/n/nb2abaaaa349e)を参考にした．
 
-まず，python のツールを入れる．すでに入っていても実行して問題ないコマンド
+まず，python のツールを入れる．(すでに入っていても実行して問題ない)
 ```bash
 sudo apt update
 sudo apt install python-setuptools python3-setuptools
@@ -70,10 +70,10 @@ make
 sudo make install
 ```
 
-pigpio デーモンを systemd サービスとして登録する．  
+最後に，pigpio デーモンを systemd サービスとして登録する．  
 = pigpioがいつでも使えるようにする
 
-まず，以下のコマンドでCLIエディタを開く．
+ひとまず，以下のコマンドでCLIエディタを開く．
 ```bash
 sudo nano /lib/systemd/system/pigpiod.service
 ```
@@ -88,7 +88,7 @@ Type=forking
 [Install]
 WantedBy=multi-user.target
 ```
-以下のコマンドを実行する．
+サービス登録のため以下のコマンドを実行する．
 ```
 sudo systemctl enable pigpiod
 sudo systemctl start pigpiod
