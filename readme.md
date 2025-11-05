@@ -97,3 +97,19 @@ sudo systemctl start pigpiod
 ### ROS2 Humble のインストール
 
 <!-- todo : write later -->
+
+## モータを制御してみる．
+
+※基板が適切に作成できたという仮定のもとです．
+
+デーモンが立ち上がっているか確認
+```bash
+pgrep -a pigpiod # プロセスIDが表示されたらOK
+pigs pigpv       # pigpio自体のバージョン番号が表示されたらOK.
+```
+
+terminalから簡単に動作確認．
+```
+pigs SERVO 12 15500 # GPIO12のピンから15500μs = 15.5msのパルス幅のPWM信号を出す
+pigs SERVO 18 900 # GPIO12のピンから9000μs = 9.0msのパルス幅のPWM信号を出す
+```
