@@ -1,8 +1,8 @@
 # メカトロ講習
 
-## 環境設定
+## ラズパイの環境設定
 
-### Ubuntu 22.04 LTS のインストール
+### 1. Ubuntu 22.04 LTS のインストール
 
 ※この章の作業が完了した状態のSDカードを配布する．
 
@@ -51,8 +51,8 @@ sudo reboot
 
 接続される側に必要なソフトのインストール
 ```bash
-sudo apt -y install openssh-server # SSHのホストに必要なやつ
-sudo apt install avahi-daemon      # `$ ssh {username@{hostname}.local}`でアクセスできるようにするやつ
+sudo apt -y install openssh-server # SSHのホストになるために必要なやつ
+sudo apt -y install avahi-daemon   # ホスト名でアクセスできるようにするやつ
 reboot # 念のため再起動
 ```
 
@@ -73,9 +73,14 @@ robot@raspi-default:~$ sudo systemctl status avahi-daemon
      Active: active (running) since Tue 2025-11-11 14:18:42 JST; 31min ago
 ```
 
-SSH鍵を生成せずに簡易するために，以下の設定ファイルを書き換える．(ctrl+Sで保存，ctrl+Xで通常ターミナルへ戻る．)
+SSH接続にはSSH鍵の生成と共有という手順が本来必要．面倒なので，SSH鍵なしで簡易接続できるようにする.
+
+以下の設定ファイルを書き換える．
 ```bash
-robot@raspi-default:~$ sudo nano /etc/ssh/sshd_config
+sudo nano /etc/ssh/sshd_config
+```
+長い設定ファイルの以下の部分を見つけて，同じ記述になるように書き換える．(ctrl+Sで保存，ctrl+Xで通常ターミナルへ戻る．)
+```
 ...
 # PermitEmptyPasswords no
 PermitEmptyPasswords yes
@@ -83,13 +88,14 @@ PermitEmptyPasswords yes
 # UsePAM yes
 UsePAM no
 ```
-
-設定を反映させるために以下のコマンドを実行．
+設定を反映させるために以下のコマンドを実行する．
 ```bash
 sudo service ssh restart
 ```
-   
-### ラズパイをカスタマイズする
+  
+### 2. ラズパイをカスタマイズする
+
+(作業はここから)
 
 #### ホスト名を変更する
 `{ホスト名}`の部分に自分のラズパイ固有の名前を付ける．
@@ -98,21 +104,30 @@ sudo service ssh restart
 sudo hostnamectl set-hostname {ホスト名}
 ```
 
-### PiSugar3 Plus の設定
+#### SSH接続できるか試す
 
-[このサイト](https://docs.pisugar.com/docs/product-wiki/battery/pisugar3/pisugar-3-series)のいう通りにすればOK
+※ここだけ windows PC を触ります．
+windows PC で `Git Bash`を起動し，以下のコマンドを実行してssh接続できるか試す．
+```bash
+ssh robot@{ホスト名}.local
+```
+
+### 3. PiSugar2/3 Plus の設定
+
+[PiSugar2の場合はこのサイト](https://docs.pisugar.com/docs/product-wiki/battery/pisugar2/pisugar-2-plus)，
+[PiSugar3の場合はこのサイト](https://docs.pisugar.com/docs/product-wiki/battery/pisugar3/pisugar-3-series)のいう通りにすればOK
 
 #### ハードウェアの取り付け
 
 1. Raspberry Pi を Power off する
-2. PiSugar3 Plus の電源が off であることを確認する
-3. PiSugar3 Plus のネジナットの保護フィルムを剥がす
-4. PiSugar3 Plus の4つのネジナットを Raspberry Pi ボードに合わせる
+2. PiSugar2/3 Plus の電源が off であることを確認する
+3. PiSugar2/3 Plus のネジナットの保護フィルムを剥がす
+4. PiSugar2/3 Plus の4つのネジナットを Raspberry Pi ボードに合わせる
     - PiSugar ボードが RPI の下に来るように、PiSugar3 Plus のポゴピンと RPI の GPIO が同じ側に来るようにして、RPI ボードを優しく押し下げる
-5. 付属のネジで PiSugar3 Plus ボードを Raspberry Pi ボードに固定する
-6. PiSugar3 Plus の電源を on にする(実質的に Raspberry Pi の電源を入れることになる)
+5. 付属のネジで PiSugar2/3 Plus ボードを Raspberry Pi ボードに固定する
+6. PiSugar2/3 Plus の電源を on にする(実質的に Raspberry Pi の電源を入れることになる)
     - USB-C側のボタンを 短押し -> 長押し の順に押す
-	 - 4つある緑のLEDが1つずつ点灯していき、その後青のLEDが点灯したら話してよい
+	- 4つある緑のLEDが1つずつ点灯していき、その後青のLEDが点灯したら話してよい
 
 #### ソフトウェアのインストール
 
@@ -134,7 +149,7 @@ bash pisugar-power-manager.sh -c release
  - Soft Shutdown を Enable
 に設定することを推奨します．
 
-### pigpio のインストール
+### 4. pigpio のインストール
 
 [このサイト](https://note.com/caelum_zachanus/n/nb2abaaaa349e)を参考にした．
 
@@ -177,16 +192,16 @@ sudo systemctl enable pigpiod
 sudo systemctl start pigpiod
 ```
 
-### SSH 接続の設定
+### 5. ROS2 Humble のインストール
+
+今はやらない
+
+<!-- todo : write later -->
+
+## 開発環境の設定
 
 Windows 側の設定
 
-<!-- todo : write later -->
-
-
-### ROS2 Humble のインストール
-
-<!-- todo : write later -->
 
 ## モータを制御してみる．
 
