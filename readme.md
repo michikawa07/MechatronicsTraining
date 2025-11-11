@@ -4,6 +4,53 @@
 
 ### Ubuntu 22.04 LTS のインストール
 
+※この章の作業が完了した状態のSDカードを配布する．
+
+#### OSのダウンロード
+[公式サイト](https://ubuntu.com/tutorials/how-to-install-ubuntu-desktop-on-raspberry-pi-4#1-overview)を参照すれば用意は簡単にできる．
+
+#### 初回設定
+
+初回起動時にするべきもろもろの設定
+
+- "ubuntu system configuration" は "English" を選択
+- "keyboard layout" は "English(US) > English(US)" を選択
+- "Wi-Fi" はその時のWi-Fi環境に合わせて設定．
+- "Where are you?" は "Tokyo"
+- "Who are you" は以下のようにする
+   - "Your name" は空白
+   - "Your computer;s name" は "raspi-defalut" ("ホスト名"と呼ばれるもの．後で個々人に合わせて変える)
+   - "Pick a username" は "robot" (なんでもいい)
+   - "Choose a password" と "Confirm your password" は `いつもの`
+   - "Log in automatically" を選択
+
+※ 起動後，少し放置しないと，firefoxなどがインストールされてないかも．
+
+#### 最低限のソフトのインストール
+```bash
+sudo apt update
+sudo apt -y install git
+sudo apt -y install curl
+sudo apt -y install ssh
+```
+
+#### 日本語入力の有効化
+```bash 
+sudo apt install -y ibus-mozc
+sudo apt install -y mozc-utils-gui
+````
+
+
+### ラズパイをカスタマイズする
+
+#### ホスト名を変更する
+`raspi-{好きな文字列}`にするといいかな．
+```bash
+sudo hostnamectl set-hostname [コンピュータ名]
+```
+
+
+
 <!-- todo : write later -->
 
 ### PiSugar3 Plus の設定
