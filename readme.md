@@ -31,27 +31,72 @@
 sudo apt update
 sudo apt -y install git
 sudo apt -y install curl
-sudo apt -y install ssh
+sudo reboot
 ```
 
 #### 日本語入力の有効化
-```bash 
-sudo apt install -y ibus-mozc
-sudo apt install -y mozc-utils-gui
-````
+やったこと(最短手順ではない可能性が高い)
+ - Setting > Reaion & language > Manage Installed Lanuages をクリックして，出てきたポップアップで install を選ぶ．
+ - Setting > Reaion & language > Language で 言語を Japanese に変更して，ログアウト&ログイン
+    - ログイン時にフォルダ名を日本語にしますか？という質問が出るが絶対に **No**
+ - Setting > Keyboard > Input Sources の "+" マークを押して Japanese > Japanese を選択
 
+#### SSH 接続の設定
 
+(これはRaspberry Pi 側の設定)
+
+ - [参考1, SSH接続全般](https://qiita.com/010Ri/items/0a09356633655b5613ee)
+ - [参考2, IP固定なしでの接続](https://qiita.com/NeK/items/a16cbc33dd3195226940#avahi-daemon2)
+ - [参考3, ssh-keygenなしでの接続](https://qiita.com/FGtatsuro/items/4893dfb138f70d972904)
+
+接続される側に必要なソフトのインストール
+```bash
+sudo apt -y install openssh-server # SSHのホストに必要なやつ
+sudo apt install avahi-daemon      # `$ ssh {username@{hostname}.local}`でアクセスできるようにするやつ
+reboot # 念のため再起動
+```
+
+`openssh-server`が起動しているか確認
+```bash
+robot@raspi-default:~$ sudo systemctl status ssh
+[sudo] password for robot: 
+● ssh.service - OpenBSD Secure Shell server
+     Loaded: loaded (/lib/systemd/system/ssh.service; enabled; vendor preset: enabled)
+     Active: active (running) since Tue 2025-11-11 14:18:43 JST; 30min ago
+```
+
+`avahi-daemon`が起動しているかの確認
+```bash
+robot@raspi-default:~$ sudo systemctl status avahi-daemon
+● avahi-daemon.service - Avahi mDNS/DNS-SD Stack
+     Loaded: loaded (/lib/systemd/system/avahi-daemon.service; enabled; vendor preset: enabled)
+     Active: active (running) since Tue 2025-11-11 14:18:42 JST; 31min ago
+```
+
+SSH鍵を生成せずに簡易するために，以下の設定ファイルを書き換える．(ctrl+Sで保存，ctrl+Xで通常ターミナルへ戻る．)
+```bash
+robot@raspi-default:~$ sudo nano /etc/ssh/sshd_config
+...
+# PermitEmptyPasswords no
+PermitEmptyPasswords yes
+...
+# UsePAM yes
+UsePAM no
+```
+
+設定を反映させるために以下のコマンドを実行．
+```bash
+sudo service ssh restart
+```
+   
 ### ラズパイをカスタマイズする
 
 #### ホスト名を変更する
+`{ホスト名}`の部分に自分のラズパイ固有の名前を付ける．
 `raspi-{好きな文字列}`にするといいかな．
 ```bash
-sudo hostnamectl set-hostname [コンピュータ名]
+sudo hostnamectl set-hostname {ホスト名}
 ```
-
-
-
-<!-- todo : write later -->
 
 ### PiSugar3 Plus の設定
 
@@ -88,15 +133,6 @@ bash pisugar-power-manager.sh -c release
  - Battery Input Protection を Enable
  - Soft Shutdown を Enable
 に設定することを推奨します．
-
-### SSH 接続の設定
-#### Raspberry Pi 側の設定
-
-<!-- todo : write later -->
-
-#### Windows 側の設定
-
-<!-- todo : write later -->
 
 ### pigpio のインストール
 
@@ -140,6 +176,13 @@ WantedBy=multi-user.target
 sudo systemctl enable pigpiod
 sudo systemctl start pigpiod
 ```
+
+### SSH 接続の設定
+
+Windows 側の設定
+
+<!-- todo : write later -->
+
 
 ### ROS2 Humble のインストール
 
