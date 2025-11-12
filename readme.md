@@ -156,7 +156,7 @@ bash pisugar-power-manager.sh -c release
 まず，python のツールを入れる．(すでに入っていても実行して問題ない)
 ```bash
 sudo apt update
-sudo apt install python-setuptools python3-setuptools
+sudo apt install python-setuptools python3-setuptools make
 ```
 
 次に，pigpio のソースコードをダウンロードしてインストール/ビルドする．
