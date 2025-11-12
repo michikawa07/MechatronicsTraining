@@ -156,7 +156,7 @@ bash pisugar-power-manager.sh -c release
 まず，python のツールを入れる．(すでに入っていても実行して問題ない)
 ```bash
 sudo apt update
-sudo apt install python-setuptools python3-setuptools make
+sudo apt install python-setuptools python3-setuptools build-essential
 ```
 
 次に，pigpio のソースコードをダウンロードしてインストール/ビルドする．
@@ -215,6 +215,6 @@ pigs pigpv       # pigpio自体のバージョン番号が表示されたらOK.
 
 terminalから簡単に動作確認．
 ```
-pigs SERVO 12 15500 # GPIO12のピンから15500μs = 15.5msのパルス幅のPWM信号を出す
+pigs SERVO 12 1550 # GPIO12のピンから15500μs = 15.5msのパルス幅のPWM信号を出す
 pigs SERVO 18 900 # GPIO12のピンから9000μs = 9.0msのパルス幅のPWM信号を出す
 ```
