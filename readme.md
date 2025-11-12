@@ -65,12 +65,25 @@ robot@raspi-default:~$ sudo systemctl status ssh
      Active: active (running) since Tue 2025-11-11 14:18:43 JST; 30min ago
 ```
 
+起動してなかったら...
+```bash
+$ sudo systemctl enable ssh
+$ sudo systemctl start ssh
+```
+
+
 `avahi-daemon`が起動しているかの確認
 ```bash
 robot@raspi-default:~$ sudo systemctl status avahi-daemon
 ● avahi-daemon.service - Avahi mDNS/DNS-SD Stack
      Loaded: loaded (/lib/systemd/system/avahi-daemon.service; enabled; vendor preset: enabled)
      Active: active (running) since Tue 2025-11-11 14:18:42 JST; 31min ago
+```
+
+起動してなかったら...
+```bash
+$ sudo systemctl enable avahi-daemon
+$ sudo systemctl start avahi-daemon
 ```
 
 SSH接続にはSSH鍵の生成と共有という手順が本来必要．面倒なので，SSH鍵なしで簡易接続できるようにする.
