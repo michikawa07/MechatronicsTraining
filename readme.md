@@ -115,6 +115,7 @@ sudo service ssh restart
 `raspi-{好きな文字列}`にするといいかな．
 ```bash
 sudo hostnamectl set-hostname {ホスト名}
+sudo systemctl restart avahi-daemon
 ```
 
 #### SSH接続できるか試す
